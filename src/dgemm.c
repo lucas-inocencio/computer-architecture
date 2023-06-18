@@ -83,6 +83,7 @@ void dgemm3(int n, double *A, double *B, double *C)
         }
 }
 
+
 void dgemm4(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; i += UNROLL * 4)
@@ -103,6 +104,7 @@ void dgemm4(int n, double *A, double *B, double *C)
         }
 }
 
+/*
 void dgemm5_1(int n, double *A, double *B, double *C)
 {
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
@@ -127,6 +129,7 @@ void dgemm6(int n, double *A, double *B, double *C)
             for (int sk = 0; sk < n; sk += BLOCKSIZE)
                 do_block2(n, si, sj, sk, A, B, C);
 }
+*/
 
 void measureTime(void (*function)(int, double *, double *, double *), int n, double *A,
                  double *B, double *C)
@@ -143,28 +146,33 @@ void measureTime(void (*function)(int, double *, double *, double *), int n, dou
 
 int main()
 {
-    int n = 1000;
-    clock_t start, end;
-    double cpu_time_used;
-    double *A = (double *)malloc(n * n * sizeof(double));
-    double *B = (double *)malloc(n * n * sizeof(double));
-    double *C = (double *)malloc(n * n * sizeof(double));
+    int n_values[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+    int num_values = sizeof(n_values) / sizeof(n_values[0]);
 
-    // fill A and B with random numbers
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
+    for (int i = 0; i < num_values; i++)
+    {
+        int n = n_values[i];
+        double *A = (double *)malloc(n * n * sizeof(double));
+        double *B = (double *)malloc(n * n * sizeof(double));
+        double *C = (double *)malloc(n * n * sizeof(double));
+
+        // Fill A and B with random numbers
+        for (int i = 0; i < n; i++)
         {
-            A[i + j * n] = randfrom(-1.0, 1.0);
-            B[i + j * n] = randfrom(-1.0, 1.0);
+            for (int j = 0; j < n; j++)
+            {
+                A[i + j * n] = randfrom(-1.0, 1.0);
+                B[i + j * n] = randfrom(-1.0, 1.0);
+            }
         }
 
-    // call DGEMMs
-    measureTime(dgemm2, n, A, B, C);
-    measureTime(dgemm3, n, A, B, C);
-    measureTime(dgemm4, n, A, B, C);
-    // measureTime(dgemm5_1, n, A, B, C);
-    // measureTime(dgemm5_2, n, A, B, C);
-    // measureTime(dgemm6, n, A, B, C);
+        // Call DGEMMs
+        measureTime(dgemm2, n, A, B, C);
+
+        free(A);
+        free(B);
+        free(C);
+    }
 
     return 0;
 }
