@@ -5,21 +5,22 @@
 import random
 import time
 
-n = 1000
+n_values = [pow(2, i) for i in range(11)]
 
-# Create random matrices A and B of shape (n, n) don't use numpy
-A = [[random.random() for i in range(n)] for j in range(n)]
-B = [[random.random() for i in range(n)] for j in range(n)]
+for n in n_values:
+    # Create random matrices A and B of shape (n, n) without using numpy
+    A = [[random.random() for i in range(n)] for j in range(n)]
+    B = [[random.random() for i in range(n)] for j in range(n)]
 
-# Create a matrix C of shape (n, n) to hold the result
-C = [[0 for i in range(n)] for j in range(n)]
+    # Create a matrix C of shape (n, n) to hold the result
+    C = [[0 for i in range(n)] for j in range(n)]
 
-# compute time for matrix multiplication
-start = time.time()
-for i in range(n):
-    for j in range(n):
-        for k in range(n):
-            C[i,j] += A[i,k] * B[k,j]
-end = time.time()
+    # Compute time for matrix multiplication
+    start = time.time()
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                C[i][j] += A[i][k] * B[k][j]
+    end = time.time()
 
-print("Time for matrix multiplication: ", end - start)
+    print("Time for matrix multiplication with n =", n, ":", end - start)

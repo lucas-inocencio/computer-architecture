@@ -3,7 +3,8 @@
 // DGEMM, which stands for Double-precision General Matrix Multiply. Because
 // we are passing the matrix dimension as the parameter , this version of DGEMM
 // uses single-dimensional versions of matrices, and and address arithmetic to get
-// better performance instead of using the more intuitive two-dimensional arrays that we saw in Python.
+// better performance instead of using the more intuitive two-dimensional arrays that we saw
+// in Python.
 
 #include <immintrin.h>
 #include <math.h>
@@ -127,7 +128,8 @@ void dgemm6(int n, double *A, double *B, double *C)
                 do_block2(n, si, sj, sk, A, B, C);
 }
 
-void measureTime(void (*function)(int, double *, double *, double *), int n, double *A, double *B, double *C)
+void measureTime(void (*function)(int, double *, double *, double *), int n, double *A,
+                 double *B, double *C)
 {
     clock_t start, end;
     double cpu_time_used;
@@ -160,9 +162,9 @@ int main()
     measureTime(dgemm2, n, A, B, C);
     measureTime(dgemm3, n, A, B, C);
     measureTime(dgemm4, n, A, B, C);
-    //measureTime(dgemm5_1, n, A, B, C);
-    //measureTime(dgemm5_2, n, A, B, C);
-    //measureTime(dgemm6, n, A, B, C);
+    // measureTime(dgemm5_1, n, A, B, C);
+    // measureTime(dgemm5_2, n, A, B, C);
+    // measureTime(dgemm6, n, A, B, C);
 
     return 0;
 }
