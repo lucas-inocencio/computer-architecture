@@ -146,7 +146,7 @@ void measureTime(void (*function)(int, double *, double *, double *), int n, dou
 
 int main()
 {
-    int n_values[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+    int n_values[] = {2048,2048,2048,2048,2048};
     int num_values = sizeof(n_values) / sizeof(n_values[0]);
 
     for (int i = 0; i < num_values; i++)
