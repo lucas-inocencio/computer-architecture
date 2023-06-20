@@ -168,7 +168,7 @@ int main()
         }
 
         // Call DGEMMs
-        measureTime(dgemm3, n, A, B, C);
+        measureTime(dgemm6, n, A, B, C);
 
         // Free memory
         free(A);
