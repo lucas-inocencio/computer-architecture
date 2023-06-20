@@ -1,11 +1,3 @@
-// We start by rewriting the Python program from Section 1.10. Figure 2.43 shows a
-// version of a matrix–matrix multiply written in C. This program is commonly called
-// DGEMM, which stands for Double-precision General Matrix Multiply. Because
-// we are passing the matrix dimension as the parameter , this version of DGEMM
-// uses single-dimensional versions of matrices, and and address arithmetic to get
-// better performance instead of using the more intuitive two-dimensional arrays that we saw
-// in Python.
-
 #include <immintrin.h>
 #include <math.h>
 #include <stdlib.h>
@@ -14,6 +6,12 @@
 
 #define UNROLL (4)
 #define BLOCKSIZE 32
+#define min(a,b)             \
+({                           \
+    __typeof__ (a) _a = (a); \
+    __typeof__ (b) _b = (b); \
+    _a < _b ? _a : _b;       \
+})
 
 double randfrom(double min, double max)
 {
@@ -24,11 +22,12 @@ double randfrom(double min, double max)
 
 void do_block1(int n, int si, int sj, int sk, double *A, double *B, double *C)
 {
-    for (int i = si; i < si + BLOCKSIZE; ++i)
-        for (int j = sj; j < sj + BLOCKSIZE; ++j)
+    int blocksize = min(n, BLOCKSIZE);
+    for (int i = si; i < si + blocksize; ++i)
+        for (int j = sj; j < sj + blocksize; ++j)
         {
             double cij = C[i + j * n];
-            for (int k = sk; k < sk + BLOCKSIZE; k++)
+            for (int k = sk; k < sk + blocksize; k++)
                 cij += A[i + k * n] * B[k + j * n];
             C[i + j * n] = cij;
         }
@@ -83,7 +82,6 @@ void dgemm3(int n, double *A, double *B, double *C)
         }
 }
 
-
 void dgemm4(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; i += UNROLL * 4)
@@ -104,7 +102,6 @@ void dgemm4(int n, double *A, double *B, double *C)
         }
 }
 
-/*
 void dgemm5_1(int n, double *A, double *B, double *C)
 {
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
@@ -129,7 +126,6 @@ void dgemm6(int n, double *A, double *B, double *C)
             for (int sk = 0; sk < n; sk += BLOCKSIZE)
                 do_block2(n, si, sj, sk, A, B, C);
 }
-*/
 
 void measureTime(void (*function)(int, double *, double *, double *), int n, double *A,
                  double *B, double *C)
@@ -146,12 +142,17 @@ void measureTime(void (*function)(int, double *, double *, double *), int n, dou
 
 int main()
 {
-    int n_values[] = {2048,2048,2048,2048,2048};
+    int n_values[] = {32, 64, 128, 256, 512, 1024,
+                      32, 64, 128, 256, 512, 1024,
+                      32, 64, 128, 256, 512, 1024,
+                      32, 64, 128, 256, 512, 1024,
+                      32, 64, 128, 256, 512, 1024};
     int num_values = sizeof(n_values) / sizeof(n_values[0]);
 
-    for (int i = 0; i < num_values; i++)
+    for (int index = 0; index < num_values; index++)
     {
-        int n = n_values[i];
+        // Allocate memory for A, B, C
+        int n = n_values[index];
         double *A = (double *)malloc(n * n * sizeof(double));
         double *B = (double *)malloc(n * n * sizeof(double));
         double *C = (double *)malloc(n * n * sizeof(double));
@@ -167,8 +168,9 @@ int main()
         }
 
         // Call DGEMMs
-        measureTime(dgemm2, n, A, B, C);
+        measureTime(dgemm3, n, A, B, C);
 
+        // Free memory
         free(A);
         free(B);
         free(C);
