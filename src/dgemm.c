@@ -1,5 +1,4 @@
 #include <immintrin.h>
-#include <math.h>
 #include <omp.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,21 +6,14 @@
 
 #define UNROLL (4)
 #define BLOCKSIZE 32
-#define P 8
+#define P 4
 
-#define min(a,b)             \
-({                           \
-    __typeof__ (a) _a = (a); \
-    __typeof__ (b) _b = (b); \
-    _a < _b ? _a : _b;       \
-})
-
-double randfrom(double min, double max)
-{
-    double range = (max - min);
-    double div = RAND_MAX / range;
-    return min + (rand() / div);
-}
+#define min(a, b)               \
+    ({                          \
+        __typeof__(a) _a = (a); \
+        __typeof__(b) _b = (b); \
+        _a < _b ? _a : _b;      \
+    })
 
 void do_block1(int n, int si, int sj, int sk, double *A, double *B, double *C)
 {
@@ -39,13 +31,14 @@ void do_block1(int n, int si, int sj, int sk, double *A, double *B, double *C)
 void do_block2(int n, int si, int sj, int sk,
                double *A, double *B, double *C)
 {
-    for (int i = si; i < si + BLOCKSIZE; i += UNROLL * 4)
-        for (int j = sj; j < sj + BLOCKSIZE; j++)
+    int blocksize = min(n, BLOCKSIZE);
+    for (int i = si; i < si + blocksize; i += UNROLL * 4)
+        for (int j = sj; j < sj + blocksize; j++)
         {
             __m256d c[UNROLL];
             for (int r = 0; r < UNROLL; r++)
                 c[r] = _mm256_load_pd(C + i + r * 4 + j * n);
-            for (int k = sk; k < sk + BLOCKSIZE; k++)
+            for (int k = sk; k < sk + blocksize; k++)
             {
                 __m256d bb = _mm256_broadcast_sd(B + j * n + k);
                 for (int r = 0; r < UNROLL; r++)
@@ -141,40 +134,36 @@ void measureTime(void (*function)(int, double *, double *, double *), int n, dou
     function(n, A, B, C);
     end = clock();
     cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("n = %d Time needed: %f seconds\n", n, cpu_time_used);
+    printf("%d,%f\n", n, cpu_time_used);
+}
+
+double *createMatrix(int n)
+{
+    double *matrix = (double *)malloc(n * n * sizeof(double));
+    for (int i = 0; i < n * n; i++)
+        matrix[i] = (double)rand() / (double)RAND_MAX;
+    return matrix;
 }
 
 int main()
 {
-    int n_values[] = {32, 64, 128, 256, 512, 1024,
-                      32, 64, 128, 256, 512, 1024,
-                      32, 64, 128, 256, 512, 1024,
-                      32, 64, 128, 256, 512, 1024,
-                      32, 64, 128, 256, 512, 1024};
+    int n_values[] = {32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
     int num_values = sizeof(n_values) / sizeof(n_values[0]);
 
     for (int index = 0; index < num_values; index++)
     {
-        // Allocate memory for A, B, C
         int n = n_values[index];
-        double *A = (double *)malloc(n * n * sizeof(double));
-        double *B = (double *)malloc(n * n * sizeof(double));
-        double *C = (double *)malloc(n * n * sizeof(double));
+        double *A = createMatrix(n);
+        double *B = createMatrix(n);
+        double *C = createMatrix(n);
 
-        // Fill A and B with random numbers
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                A[i + j * n] = randfrom(-1.0, 1.0);
-                B[i + j * n] = randfrom(-1.0, 1.0);
-            }
-        }
-
-        // Call DGEMMs
+        //measureTime(dgemm2, n, A, B, C);
+        //measureTime(dgemm3, n, A, B, C);
+        //measureTime(dgemm4, n, A, B, C);
+        //measureTime(dgemm5_1, n, A, B, C);
+        measureTime(dgemm5_2, n, A, B, C);
         measureTime(dgemm6, n, A, B, C);
 
-        // Free memory
         free(A);
         free(B);
         free(C);
