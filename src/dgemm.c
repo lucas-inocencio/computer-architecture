@@ -13,6 +13,9 @@
     _a < _b ? _a : _b;       \
 })
 
+#define P 8 /* define a constant that we’ll use a few times */
+#pragma omp parallel num_threads(P)
+
 double randfrom(double min, double max)
 {
     double range = (max - min);
@@ -168,7 +171,7 @@ int main()
         }
 
         // Call DGEMMs
-        measureTime(dgemm6, n, A, B, C);
+        measureTime(dgemm2, n, A, B, C);
 
         // Free memory
         free(A);
