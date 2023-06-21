@@ -1,20 +1,20 @@
 #include <immintrin.h>
 #include <math.h>
+#include <omp.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 
 #define UNROLL (4)
 #define BLOCKSIZE 32
+#define P 8
+
 #define min(a,b)             \
 ({                           \
     __typeof__ (a) _a = (a); \
     __typeof__ (b) _b = (b); \
     _a < _b ? _a : _b;       \
 })
-
-#define P 8 /* define a constant that we’ll use a few times */
-#pragma omp parallel num_threads(P)
 
 double randfrom(double min, double max)
 {
@@ -123,6 +123,7 @@ void dgemm5_2(int n, double *A, double *B, double *C)
 
 void dgemm6(int n, double *A, double *B, double *C)
 {
+#pragma omp parallel num_threads(P)
 #pragma omp parallel for
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
         for (int si = 0; si < n; si += BLOCKSIZE)
@@ -171,7 +172,7 @@ int main()
         }
 
         // Call DGEMMs
-        measureTime(dgemm2, n, A, B, C);
+        measureTime(dgemm6, n, A, B, C);
 
         // Free memory
         free(A);
