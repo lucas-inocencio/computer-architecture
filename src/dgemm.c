@@ -15,6 +15,7 @@
         _a < _b ? _a : _b;      \
     })
 
+// Basic Implementation with cache blocking
 void do_block1(int n, int si, int sj, int sk, double *A, double *B, double *C)
 {
     int blocksize = min(n, BLOCKSIZE);
@@ -28,6 +29,7 @@ void do_block1(int n, int si, int sj, int sk, double *A, double *B, double *C)
         }
 }
 
+// AVX2 Instructions with Loop Unrolling and cache blocking
 void do_block2(int n, int si, int sj, int sk,
                double *A, double *B, double *C)
 {
@@ -50,6 +52,7 @@ void do_block2(int n, int si, int sj, int sk,
         }
 }
 
+// Basic Implementation
 void dgemm2(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; ++i)
@@ -64,7 +67,8 @@ void dgemm2(int n, double *A, double *B, double *C)
     }
 }
 
-void dgemm3(int n, double *A, double *B, double *C)
+// AVX Instructions
+void dgemm3_avx(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; i += 4)
         for (int j = 0; j < n; j++)
@@ -78,6 +82,22 @@ void dgemm3(int n, double *A, double *B, double *C)
         }
 }
 
+// AVX2 Instructions
+void dgemm3_avx2(int n, double *A, double *B, double *C)
+{
+    for (int i = 0; i < n; i += 4)
+        for (int j = 0; j < n; j++)
+        {
+            __m256d c0 = _mm256_load_pd(C + i + j * n);
+            for (int k = 0; k < n; k++)
+                c0 = _mm256_add_pd(c0,
+                                   _mm256_mul_pd(_mm256_load_pd(A + i + k * n),
+                                                 _mm256_broadcast_sd(B + k + j * n)));
+            _mm256_store_pd(C + i + j * n, c0);
+        }
+}
+
+// AVX2 Instructions with Loop Unrolling
 void dgemm4(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; i += UNROLL * 4)
@@ -98,6 +118,7 @@ void dgemm4(int n, double *A, double *B, double *C)
         }
 }
 
+// Basic Implementation with cache blocking
 void dgemm5_1(int n, double *A, double *B, double *C)
 {
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
@@ -106,6 +127,7 @@ void dgemm5_1(int n, double *A, double *B, double *C)
                 do_block1(n, si, sj, sk, A, B, C);
 }
 
+// AVX2 Instructions with Loop Unrolling and cache blocking
 void dgemm5_2(int n, double *A, double *B, double *C)
 {
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
@@ -114,6 +136,7 @@ void dgemm5_2(int n, double *A, double *B, double *C)
                 do_block2(n, si, sj, sk, A, B, C);
 }
 
+// AVX2 Instructions with Loop Unrolling, cache blocking and parallelization
 void dgemm6(int n, double *A, double *B, double *C)
 {
 #pragma omp parallel num_threads(P)
@@ -124,6 +147,7 @@ void dgemm6(int n, double *A, double *B, double *C)
                 do_block2(n, si, sj, sk, A, B, C);
 }
 
+// Measure the time it takes to run a function
 void measureTime(void (*function)(int, double *, double *, double *), int n, double *A,
                  double *B, double *C)
 {
@@ -137,6 +161,7 @@ void measureTime(void (*function)(int, double *, double *, double *), int n, dou
     printf("%d,%f\n", n, cpu_time_used);
 }
 
+// Create a random matrix of size n x n
 double *createMatrix(int n)
 {
     double *matrix = (double *)malloc(n * n * sizeof(double));
@@ -157,10 +182,10 @@ int main()
         double *B = createMatrix(n);
         double *C = createMatrix(n);
 
-        //measureTime(dgemm2, n, A, B, C);
-        //measureTime(dgemm3, n, A, B, C);
-        //measureTime(dgemm4, n, A, B, C);
-        //measureTime(dgemm5_1, n, A, B, C);
+        // measureTime(dgemm2, n, A, B, C);
+        // measureTime(dgemm3, n, A, B, C);
+        // measureTime(dgemm4, n, A, B, C);
+        // measureTime(dgemm5_1, n, A, B, C);
         measureTime(dgemm5_2, n, A, B, C);
         measureTime(dgemm6, n, A, B, C);
 
