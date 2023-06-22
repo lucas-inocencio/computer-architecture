@@ -77,7 +77,7 @@ void dgemm3_avx(int n, double *A, double *B, double *C)
             for (int k = 0; k < n; k++)
                 c0 = _mm256_add_pd(c0,
                                    _mm256_mul_pd(_mm256_load_pd(A + i + k * n),
-                                                 _mm256_broadcast_sd(B + k + j * n)));
+                                                 _mm256_set1_pd(B[k + j * n])));
             _mm256_store_pd(C + i + j * n, c0);
         }
 }
@@ -183,9 +183,10 @@ int main()
         double *C = createMatrix(n);
 
         // measureTime(dgemm2, n, A, B, C);
-        // measureTime(dgemm3, n, A, B, C);
-        // measureTime(dgemm4, n, A, B, C);
-        // measureTime(dgemm5_1, n, A, B, C);
+        measureTime(dgemm3_avx, n, A, B, C);
+        measureTime(dgemm3_avx2, n, A, B, C);
+        measureTime(dgemm4, n, A, B, C);
+        measureTime(dgemm5_1, n, A, B, C);
         measureTime(dgemm5_2, n, A, B, C);
         measureTime(dgemm6, n, A, B, C);
 
