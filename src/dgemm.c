@@ -1,12 +1,13 @@
 #include <immintrin.h>
+#include <math.h>
 #include <omp.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
-#define UNROLL (4)
 #define BLOCKSIZE 32
-#define P 4
+#define P 8
+#define UNROLL (8)
 
 /**
  * Basic Implementation with cache blocking
@@ -221,7 +222,8 @@ void dgemm5_2(int n, double *A, double *B, double *C)
  */
 void dgemm6(int n, double *A, double *B, double *C)
 {
-#pragma omp parallel for num_threads(P)
+    omp_set_num_threads(P);
+#pragma omp parallel for
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
         for (int si = 0; si < n; si += BLOCKSIZE)
             for (int sk = 0; sk < n; sk += BLOCKSIZE)
@@ -230,9 +232,9 @@ void dgemm6(int n, double *A, double *B, double *C)
 
 /**
  * Create a square matrix of size n
- * 
+ *
  * @param n size of the matrix
- * 
+ *
  * @return double* pointer to the matrix
  */
 double *createSquareMatrix(int n)
@@ -245,8 +247,10 @@ double *createSquareMatrix(int n)
 
 int main()
 {
-    int max_power, num_runs, target;
+    int min_power, max_power, num_runs, target;
 
+    printf("Enter min power of 2:\n");
+    scanf("%d", &min_power);
     printf("Enter max power of 2:\n");
     scanf("%d", &max_power);
     printf("Enter number of runs:\n");
@@ -259,18 +263,17 @@ int main()
            "5: Basic Implementation with cache blocking\n"
            "6: AVX2 Instructions with Loop Unrolling and cache blocking\n"
            "7: AVX2 Instructions with Loop Unrolling, cache blocking and parallelization\n");
-    scanf("%s", &target);
+    scanf("%d", &target);
 
-    int sizes[max_power];
-    for (int i = 5; i < max_power; i++)
-        sizes[i] = 1 << i;
+    int sizes[max_power - min_power + 1];
+    for (int i = 0; i < max_power - min_power + 1; i++)
+        sizes[i] = pow(2, min_power + i);
 
     FILE *fp;
     fp = fopen("./docs/csv/results.csv", "a");
 
     for (int i = 0; i < num_runs; i++)
-    {
-        for (int j = 0; j < max_power; j++)
+        for (int j = 0; j < max_power - min_power + 1; j++)
         {
             int n = sizes[j];
             double *A = createSquareMatrix(n);
@@ -283,31 +286,39 @@ int main()
             {
             case 1:
                 dgemm2(n, A, B, C);
+                break;
             case 2:
                 dgemm3_avx(n, A, B, C);
+                break;
             case 3:
                 dgemm3_avx2(n, A, B, C);
+                break;
             case 4:
                 dgemm4(n, A, B, C);
+                break;
             case 5:
                 dgemm5_1(n, A, B, C);
+                break;
             case 6:
                 dgemm5_2(n, A, B, C);
+                break;
             case 7:
                 dgemm6(n, A, B, C);
+                break;
             }
 
             clock_t end = clock();
 
             double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
 
+            printf("Run %d: %d, %d, %f\n", i, target, n, time_taken);
             fprintf(fp, "%d,%d,%f\n", target, n, time_taken);
 
             free(A);
             free(B);
             free(C);
         }
-    }
 
+    fclose(fp);
     return 0;
 }
