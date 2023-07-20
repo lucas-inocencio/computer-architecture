@@ -239,7 +239,7 @@ void dgemm6(int n, double *A, double *B, double *C)
  */
 double *createSquareMatrix(int n)
 {
-    double *matrix = (double *)malloc(n * n * sizeof(double));
+    double *matrix = (double *)_mm_malloc(n * n * sizeof(double), 64);
     for (int i = 0; i < n * n; i++)
         matrix[i] = (double)rand() / (double)RAND_MAX;
     return matrix;
@@ -250,11 +250,14 @@ int main()
     int min_power, max_power, num_runs, target;
 
     printf("Enter min power of 2:\n");
-    scanf("%d", &min_power);
+    if (scanf("%d", &min_power))
+        ;
     printf("Enter max power of 2:\n");
-    scanf("%d", &max_power);
+    if (scanf("%d", &max_power))
+        ;
     printf("Enter number of runs:\n");
-    scanf("%d", &num_runs);
+    if (scanf("%d", &num_runs))
+        ;
     printf("Enter target DGEMM function:\n"
            "1: Basic Implementation\n"
            "2: AVX Instructions\n"
@@ -263,11 +266,12 @@ int main()
            "5: Basic Implementation with cache blocking\n"
            "6: AVX2 Instructions with Loop Unrolling and cache blocking\n"
            "7: AVX2 Instructions with Loop Unrolling, cache blocking and parallelization\n");
-    scanf("%d", &target);
+    if (scanf("%d", &target))
+        ;
 
     int sizes[max_power - min_power + 1];
     for (int i = 0; i < max_power - min_power + 1; i++)
-        sizes[i] = pow(2, min_power + i);
+        sizes[i] = (int)pow(2, min_power + i);
 
     FILE *fp;
     fp = fopen("./docs/csv/results.csv", "a");
@@ -314,9 +318,9 @@ int main()
             printf("Run %d: %d, %d, %f\n", i, target, n, time_taken);
             fprintf(fp, "%d,%d,%f\n", target, n, time_taken);
 
-            free(A);
-            free(B);
-            free(C);
+            _mm_free(A);
+            _mm_free(B);
+            _mm_free(C);
         }
 
     fclose(fp);
