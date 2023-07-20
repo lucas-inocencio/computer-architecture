@@ -8,39 +8,54 @@
 #define BLOCKSIZE 32
 #define P 4
 
-#define min(a, b)               \
-    ({                          \
-        __typeof__(a) _a = (a); \
-        __typeof__(b) _b = (b); \
-        _a < _b ? _a : _b;      \
-    })
-
-// Basic Implementation with cache blocking
+/**
+ * Basic Implementation with cache blocking
+ *
+ * @param n size of the matrix
+ * @param si starting index of i
+ * @param sj starting index of j
+ * @param sk starting index of k
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ */
 void do_block1(int n, int si, int sj, int sk, double *A, double *B, double *C)
 {
-    int blocksize = min(n, BLOCKSIZE);
-    for (int i = si; i < si + blocksize; ++i)
-        for (int j = sj; j < sj + blocksize; ++j)
+    for (int i = si; i < si + BLOCKSIZE; ++i)
+        for (int j = sj; j < sj + BLOCKSIZE; ++j)
         {
             double cij = C[i + j * n];
-            for (int k = sk; k < sk + blocksize; k++)
+            for (int k = sk; k < sk + BLOCKSIZE; k++)
                 cij += A[i + k * n] * B[k + j * n];
             C[i + j * n] = cij;
         }
 }
 
-// AVX2 Instructions with Loop Unrolling and cache blocking
+/**
+ * AVX2 Instructions with Loop Unrolling and cache blocking
+ *
+ * @param n size of the matrix
+ * @param si starting index of i
+ * @param sj starting index of j
+ * @param sk starting index of k
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ */
 void do_block2(int n, int si, int sj, int sk,
                double *A, double *B, double *C)
 {
-    int blocksize = min(n, BLOCKSIZE);
-    for (int i = si; i < si + blocksize; i += UNROLL * 4)
-        for (int j = sj; j < sj + blocksize; j++)
+    for (int i = si; i < si + BLOCKSIZE; i += UNROLL * 4)
+        for (int j = sj; j < sj + BLOCKSIZE; j++)
         {
             __m256d c[UNROLL];
             for (int r = 0; r < UNROLL; r++)
                 c[r] = _mm256_load_pd(C + i + r * 4 + j * n);
-            for (int k = sk; k < sk + blocksize; k++)
+            for (int k = sk; k < sk + BLOCKSIZE; k++)
             {
                 __m256d bb = _mm256_broadcast_sd(B + j * n + k);
                 for (int r = 0; r < UNROLL; r++)
@@ -52,7 +67,19 @@ void do_block2(int n, int si, int sj, int sk,
         }
 }
 
-// Basic Implementation
+/**
+ * Basic Implementation
+ *
+ * @param n size of the matrix
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ *
+ * @note This function is not optimized
+ *
+ */
 void dgemm2(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; ++i)
@@ -67,7 +94,16 @@ void dgemm2(int n, double *A, double *B, double *C)
     }
 }
 
-// AVX Instructions
+/**
+ * AVX Instructions
+ *
+ * @param n size of the matrix
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ */
 void dgemm3_avx(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; i += 4)
@@ -82,7 +118,16 @@ void dgemm3_avx(int n, double *A, double *B, double *C)
         }
 }
 
-// AVX2 Instructions
+/**
+ * AVX2 Instructions
+ *
+ * @param n size of the matrix
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ */
 void dgemm3_avx2(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; i += 4)
@@ -97,7 +142,16 @@ void dgemm3_avx2(int n, double *A, double *B, double *C)
         }
 }
 
-// AVX2 Instructions with Loop Unrolling
+/**
+ * AVX2 Instructions with Loop Unrolling
+ *
+ * @param n size of the matrix
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ */
 void dgemm4(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; i += UNROLL * 4)
@@ -118,7 +172,16 @@ void dgemm4(int n, double *A, double *B, double *C)
         }
 }
 
-// Basic Implementation with cache blocking
+/**
+ * Basic Implementation with cache blocking
+ *
+ * @param n size of the matrix
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ */
 void dgemm5_1(int n, double *A, double *B, double *C)
 {
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
@@ -127,7 +190,17 @@ void dgemm5_1(int n, double *A, double *B, double *C)
                 do_block1(n, si, sj, sk, A, B, C);
 }
 
-// AVX2 Instructions with Loop Unrolling and cache blocking
+/**
+ * AVX2 Instructions with Loop Unrolling and cache blocking
+ *
+ * @param n size of the matrix
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ *
+ */
 void dgemm5_2(int n, double *A, double *B, double *C)
 {
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
@@ -136,33 +209,33 @@ void dgemm5_2(int n, double *A, double *B, double *C)
                 do_block2(n, si, sj, sk, A, B, C);
 }
 
-// AVX2 Instructions with Loop Unrolling, cache blocking and parallelization
+/**
+ * AVX2 Instructions with Loop Unrolling, cache blocking and parallelization
+ *
+ * @param n size of the matrix
+ * @param A matrix A
+ * @param B matrix B
+ * @param C matrix C
+ *
+ * @return void
+ */
 void dgemm6(int n, double *A, double *B, double *C)
 {
-#pragma omp parallel num_threads(P)
-#pragma omp parallel for
+#pragma omp parallel for num_threads(P)
     for (int sj = 0; sj < n; sj += BLOCKSIZE)
         for (int si = 0; si < n; si += BLOCKSIZE)
             for (int sk = 0; sk < n; sk += BLOCKSIZE)
                 do_block2(n, si, sj, sk, A, B, C);
 }
 
-// Measure the time it takes to run a function
-void measureTime(void (*function)(int, double *, double *, double *), int n, double *A,
-                 double *B, double *C)
-{
-    clock_t start, end;
-    double cpu_time_used;
-
-    start = clock();
-    function(n, A, B, C);
-    end = clock();
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("%d,%f\n", n, cpu_time_used);
-}
-
-// Create a random matrix of size n x n
-double *createMatrix(int n)
+/**
+ * Create a square matrix of size n
+ * 
+ * @param n size of the matrix
+ * 
+ * @return double* pointer to the matrix
+ */
+double *createSquareMatrix(int n)
 {
     double *matrix = (double *)malloc(n * n * sizeof(double));
     for (int i = 0; i < n * n; i++)
@@ -172,27 +245,68 @@ double *createMatrix(int n)
 
 int main()
 {
-    int n_values[] = {32, 64, 128, 256, 512, 1024, 2048, 4096, 8192};
-    int num_values = sizeof(n_values) / sizeof(n_values[0]);
+    int max_power, num_runs, target;
 
-    for (int index = 0; index < num_values; index++)
+    printf("Enter max power of 2:\n");
+    scanf("%d", &max_power);
+    printf("Enter number of runs:\n");
+    scanf("%d", &num_runs);
+    printf("Enter target DGEMM function:\n"
+           "1: Basic Implementation\n"
+           "2: AVX Instructions\n"
+           "3: AVX2 Instructions\n"
+           "4: AVX2 Instructions with Loop Unrolling\n"
+           "5: Basic Implementation with cache blocking\n"
+           "6: AVX2 Instructions with Loop Unrolling and cache blocking\n"
+           "7: AVX2 Instructions with Loop Unrolling, cache blocking and parallelization\n");
+    scanf("%s", &target);
+
+    int sizes[max_power];
+    for (int i = 5; i < max_power; i++)
+        sizes[i] = 1 << i;
+
+    FILE *fp;
+    fp = fopen("./docs/csv/results.csv", "a");
+
+    for (int i = 0; i < num_runs; i++)
     {
-        int n = n_values[index];
-        double *A = createMatrix(n);
-        double *B = createMatrix(n);
-        double *C = createMatrix(n);
+        for (int j = 0; j < max_power; j++)
+        {
+            int n = sizes[j];
+            double *A = createSquareMatrix(n);
+            double *B = createSquareMatrix(n);
+            double *C = createSquareMatrix(n);
 
-        // measureTime(dgemm2, n, A, B, C);
-        measureTime(dgemm3_avx, n, A, B, C);
-        measureTime(dgemm3_avx2, n, A, B, C);
-        measureTime(dgemm4, n, A, B, C);
-        measureTime(dgemm5_1, n, A, B, C);
-        measureTime(dgemm5_2, n, A, B, C);
-        measureTime(dgemm6, n, A, B, C);
+            clock_t start = clock();
 
-        free(A);
-        free(B);
-        free(C);
+            switch (target)
+            {
+            case 1:
+                dgemm2(n, A, B, C);
+            case 2:
+                dgemm3_avx(n, A, B, C);
+            case 3:
+                dgemm3_avx2(n, A, B, C);
+            case 4:
+                dgemm4(n, A, B, C);
+            case 5:
+                dgemm5_1(n, A, B, C);
+            case 6:
+                dgemm5_2(n, A, B, C);
+            case 7:
+                dgemm6(n, A, B, C);
+            }
+
+            clock_t end = clock();
+
+            double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
+
+            fprintf(fp, "%d,%d,%f\n", target, n, time_taken);
+
+            free(A);
+            free(B);
+            free(C);
+        }
     }
 
     return 0;

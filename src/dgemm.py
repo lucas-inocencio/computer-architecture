@@ -1,64 +1,63 @@
 import random
 import time
 
-MAX_POWER = 11
 
-
-def create_matrix(n):
+def create_matrix(n: int) -> list[list[float]]:
     """
-    Creates a matrix of size n x n.
+    Creates a random matrix of size n x n.
 
     Args:
-        n (int): The size of the matrix to create.
+        n (int): The size of the matrix.
 
     Returns:
-        list: A list of lists representing the matrix.
+        list[list[float]]: The matrix."
     """
-    return [[random.random() for _ in range(n)] for _ in range(n)]
+    return [[random.uniform(-1, 1) for _ in range(n)] for _ in range(n)]
 
 
-def multiply_matrices(matrixA, matrixB, matrixC):
+def dgemm(A: list[list[float]], B: list[list[float]], C: list[list[float]]) -> None:
     """
-    Multiplies two matrices together and stores the result in a third matrix.
+    Multiplies two matrices A and B and stores the result in C.
 
     Args:
-        matrixA (list): A list of lists representing the first matrix.
-        matrixB (list): A list of lists representing the second matrix.
+        A (list[list[float]]): The first matrix.
+        B (list[list[float]]): The second matrix.
+        C (list[list[float]]): The matrix where the result will be stored.
 
     Returns:
-        list: A list of lists representing the result of the matrix multiplication.
+        None: The result is stored in C.
+
     """
-    n = len(matrixA)
+
+
+    n = len(A)
 
     for i in range(n):
         for j in range(n):
             for k in range(n):
-                matrixC[i][j] += matrixA[i][k] * matrixB[k][j]
+                C[i][j] += A[i][k] * B[k][j]
 
 
-def measure_execution_time(n):
-    """
-    Measures the execution time of multiplying two matrices of size n x n.
+if __name__ == "__main__":
 
-    Args:
-        n (int): The size of the matrix to create.
-        
-    Returns:
-        float: The time it took to multiply the matrices.
-    """
-    matrixA = create_matrix(n)
-    matrixB = create_matrix(n)
-    matrixC = create_matrix(n)
+    max_power = int(input("Enter the max power of 2: "))
+    num_runs = int(input("Enter the number of runs: "))
 
-    start_time = time.perf_counter()
-    multiply_matrices(matrixA, matrixB, matrixC)
-    end_time = time.perf_counter()
+    # create list of sizes
+    sizes = [2 ** i for i in range(5,  max_power + 1)]
 
-    execution_time = end_time - start_time
-    print(f"{n},{execution_time}")
+    with open("./docs/csv/results.csv", "a") as f:
+        for _ in range(num_runs):
+            for n in sizes:
+                A = create_matrix(n)
+                B = create_matrix(n)
+                C = create_matrix(n)
 
+                start = time.time()
+                dgemm(A, B, C)
+                end = time.time()
 
-n_values = [pow(2, i) for i in range(MAX_POWER)]
+                # write in the end of the file
+                f.write(f"Python,{n},{end - start}\n")
 
-for n in n_values:
-    measure_execution_time(n)
+    print("Done!")
