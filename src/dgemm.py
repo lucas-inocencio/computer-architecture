@@ -40,14 +40,15 @@ def dgemm(A: list[list[float]], B: list[list[float]], C: list[list[float]]) -> N
 
 if __name__ == "__main__":
 
+    min_power = int(input("Enter the min power of 2: "))
     max_power = int(input("Enter the max power of 2: "))
     num_runs = int(input("Enter the number of runs: "))
 
     # create list of sizes
-    sizes = [2 ** i for i in range(5,  max_power + 1)]
+    sizes = [2 ** i for i in range(min_power,  max_power - min_power + 1)]
 
     with open("./docs/csv/results.csv", "a") as f:
-        for _ in range(num_runs):
+        for i in range(num_runs):
             for n in sizes:
                 A = create_matrix(n)
                 B = create_matrix(n)
@@ -58,6 +59,7 @@ if __name__ == "__main__":
                 end = time.time()
 
                 # write in the end of the file
-                f.write(f"Python,{n},{end - start}\n")
+                f.write(f"python,{n},{end - start}\n")
+                print(f"Run: {i}, size: {n}, time: {end - start}")
 
     print("Done!")

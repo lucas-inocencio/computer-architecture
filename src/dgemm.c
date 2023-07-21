@@ -1,4 +1,4 @@
-#include <immintrin.h>
+#include <x86intrin.h>
 #include <math.h>
 #include <omp.h>
 #include <stdio.h>
@@ -84,7 +84,6 @@ void do_block2(int n, int si, int sj, int sk,
 void dgemm2(int n, double *A, double *B, double *C)
 {
     for (int i = 0; i < n; ++i)
-    {
         for (int j = 0; j < n; ++j)
         {
             double cij = C[i + j * n];
@@ -92,7 +91,6 @@ void dgemm2(int n, double *A, double *B, double *C)
                 cij += A[i + k * n] * B[k + j * n];
             C[i + j * n] = cij;
         }
-    }
 }
 
 /**
@@ -155,21 +153,21 @@ void dgemm3_avx2(int n, double *A, double *B, double *C)
  */
 void dgemm4(int n, double *A, double *B, double *C)
 {
-    for (int i = 0; i < n; i += UNROLL * 4)
+    for (int i = 0; i < n; i += UNROLL * 8)
         for (int j = 0; j < n; ++j)
         {
             __m256d c[UNROLL];
             for (int r = 0; r < UNROLL; r++)
-                c[r] = _mm256_load_pd(C + i + r * 4 + j * n);
+                c[r] = _mm256_load_pd(C + i + r * 8 + j * n);
 
             for (int k = 0; k < n; k++)
             {
                 __m256d bb = _mm256_broadcast_sd(B + j * n + k);
                 for (int r = 0; r < UNROLL; r++)
-                    c[r] = _mm256_fmadd_pd(_mm256_load_pd(A + n * k + r * 4 + i), bb, c[r]);
+                    c[r] = _mm256_fmadd_pd(_mm256_load_pd(A + n * k + r * 8 + i), bb, c[r]);
             }
             for (int r = 0; r < UNROLL; r++)
-                _mm256_store_pd(C + i + r * 4 + j * n, c[r]);
+                _mm256_store_pd(C + i + r * 8 + j * n, c[r]);
         }
 }
 
@@ -247,7 +245,7 @@ double *createSquareMatrix(int n)
 
 int main()
 {
-    int min_power, max_power, num_runs, target;
+    int min_power, max_power, num_runs, label;
 
     printf("Enter min power of 2:\n");
     if (scanf("%d", &min_power))
@@ -258,7 +256,7 @@ int main()
     printf("Enter number of runs:\n");
     if (scanf("%d", &num_runs))
         ;
-    printf("Enter target DGEMM function:\n"
+    printf("Enter label DGEMM function:\n"
            "1: Basic Implementation\n"
            "2: AVX Instructions\n"
            "3: AVX2 Instructions\n"
@@ -266,7 +264,7 @@ int main()
            "5: Basic Implementation with cache blocking\n"
            "6: AVX2 Instructions with Loop Unrolling and cache blocking\n"
            "7: AVX2 Instructions with Loop Unrolling, cache blocking and parallelization\n");
-    if (scanf("%d", &target))
+    if (scanf("%d", &label))
         ;
 
     int sizes[max_power - min_power + 1];
@@ -286,7 +284,7 @@ int main()
 
             clock_t start = clock();
 
-            switch (target)
+            switch (label)
             {
             case 1:
                 dgemm2(n, A, B, C);
@@ -315,8 +313,8 @@ int main()
 
             double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
 
-            printf("Run %d: %d, %d, %f\n", i, target, n, time_taken);
-            fprintf(fp, "%d,%d,%f\n", target, n, time_taken);
+            printf("Run %d: %d, %d, %f\n", i, label, n, time_taken);
+            fprintf(fp, "%d,%d,%d,%f\n", label, P, n, time_taken);
 
             _mm_free(A);
             _mm_free(B);
