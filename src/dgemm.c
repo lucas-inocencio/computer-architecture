@@ -314,7 +314,7 @@ int main()
             double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
 
             printf("Run %d: %d, %d, %f\n", i, label, n, time_taken);
-            fprintf(fp, "%d,%d,%d,%f\n", label, P, n, time_taken);
+            fprintf(fp, "%d,%d,%f\n", label, n, time_taken);
 
             _mm_free(A);
             _mm_free(B);
