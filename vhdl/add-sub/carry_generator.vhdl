@@ -1,5 +1,8 @@
 -- CLA generator 4-bit
 
+library ieee;
+use ieee.std_logic_1164.all;
+
 ENTITY carry_generator IS
     PORT (
         p1, g1, p2, g2, cin : IN STD_LOGIC;
