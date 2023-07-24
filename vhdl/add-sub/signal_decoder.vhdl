@@ -4,7 +4,7 @@ USE ieee.std_logic_1164.ALL;
 ENTITY signal_decoder IS
     PORT (
         a, b : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-        a0, a1, a2, a3, a4, a5, a6, a7, b1, b2, b3, b4, b5, b6, b7 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        a0, a1, a2, a3, a4, a5, a6, a7, b1, b2, b3, b4, b5, b6, b7 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
 END signal_decoder;
 

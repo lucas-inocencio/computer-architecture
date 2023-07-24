@@ -5,7 +5,7 @@ ENTITY inverter IS
     PORT (
         a : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         sel : IN STD_LOGIC;
-        s : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+        s : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
     );
 END inverter;
 

@@ -1,13 +1,13 @@
 -- moduling different sizes of adders
 
-LIBRARY iee;
-LIBRARY iee.std_logic_1164.ALL;
+LIBRARY ieee;
+use ieee.std_logic_1164.ALL;
 
 ENTITY output_size IS
     PORT (
         s0, s1, s2, s3, s4, s5, s6, s7 : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         sel : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-        s : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+        s : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
     );
 END output_size;
 

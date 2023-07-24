@@ -1,16 +1,13 @@
 \documentclass[12pt]{article}
 
+\bibliography{sbc-template}
+
 \usepackage{graphicx}
 \usepackage{indentfirst}
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
 \usepackage{sbc-template}
 \usepackage{url}
-\usepackage{listings}
-
-\lstset{language=[LaTeX]TeX,
-        basicstyle=\ttfamily,
-        columns=fullflexible,
-        keepspaces=true}
 
 \sloppy
 
@@ -38,6 +35,9 @@
 As operações com matrizes formam o núcleo dos códigos científicos que executam nos maiores supercomputadores do mundo, assim dado a relevância dos problemas estudados e os custos associados com a operação dessas grandes máquinas faz-se necessário que essas operações sejam executadas de maneira extremamente eficiente no hardware disponível. Em processadores de propósito geral essa eficiência somente é alcançada se o programador adaptar seus códigos aos recursos disponíveis na microarquitetura, reorganizando os padrões de acesso aos dados e fazendo uso de recursos especiais como instruções vetoriais.
 
 Para essa tarefa um grupo de no máximo 3 alunos devem realizar uma investigação do código do DGEMM seguindo os passos indicados nas seções “Going Faster” do livro texto. O grupo deve realizar sua própria investigação de como as técnicas apresentadas melhoram o desempenho do DGEMM em suas plataformas. Cada grupo deve produzir um relatório descritivo a ser entregue no final do período (data especificada na página da disciplina), onde esse relatório deve conter uma explicação do problema DGEMM, além de uma seção para cada uma das otimizações feitas seguindo o que é apresentado em nossas aulas.
+
+\newpage
+\newpage
 
 \section{Introdução}
 
@@ -70,7 +70,7 @@ onde:
 \end{itemize}
 
 
-Especificacao da Maquina para os Testes:
+Especificação da máquina para os testes:
 
 \begin{itemize}
     \item AMD Ryzen 5 3400G
@@ -80,13 +80,16 @@ Especificacao da Maquina para os Testes:
     \item Python 3.11
 \end{itemize}
 
+\newpage
+\newpage
+
 \section{Desenvolvimento}
 
 \subsection{Matrix Multiply in Python}
 
-Para demonstrar o poder das ideias usaremos o codigo abaixo como base de comparacao para as otimizacoes.
+Para demonstrar o poder das ideias usaremos o código abaixo como base de comparação para as otimizações.
 
-Trecho de codigo original retirado do livro:
+Trecho de código original retirado do livro:
 
 \begin{lstlisting}
     n = len(A)
@@ -95,13 +98,6 @@ Trecho de codigo original retirado do livro:
             for k in range(n):
                 C[i][j] += A[i][k] * B[k][j]
 \end{lstlisting}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.6]{figures/python.png}
-    \caption{Python}
-    \label{fig:python}
-\end{figure}
 
 \begin{table}[h]
     \centering
@@ -118,12 +114,24 @@ Trecho de codigo original retirado do livro:
     \caption{Python}
 \end{table}
 
-Conforme mostrado na tabela de desempenho, mesmo para tamanhos de problemas relativamente pequenos, o Python exibe ineficiência na resolução de problemas de multiplicação de matrizes. Essa ineficiência se deve principalmente ao fato de o Python ser uma linguagem interpretada, o que normalmente resulta em uma execução mais lenta em comparação com as linguagens compiladas. Para tarefas computacionais intensivas, como multiplicação de matrizes, é recomendável usar linguagens compiladas ou utilizar bibliotecas otimizadas em Python (feitas em C), como NumPy ou Pandas, que podem melhorar significativamente o desempenho aproveitando otimizações e paralelização de baixo nível.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/python.png}
+    \caption{Python}
+    \label{fig:python}
+\end{figure}
+
+
+Conforme mostrado na tabela de desempenho, mesmo para tamanhos de problemas relativamente pequenos, o Python exibe ineficiência na resolução de problemas de multiplicação de matrizes. Essa ineficiência se deve principalmente ao fato de o Python ser uma linguagem interpretada, o que normalmente resulta em uma execução mais lenta em comparação com as linguagens compiladas. Para tarefas computacionais intensas, como multiplicação de matrizes, é recomendável usar linguagens compiladas ou utilizar bibliotecas otimizadas para Python feitas em C ou Fortran, como NumPy ou Pandas, que podem melhorar significativamente o desempenho aproveitando otimizações e paralelização de baixo nível.
+
+\newpage
+\newpage
 
 \subsection{Matrix Multiply in C}
 
-Trecho de codigo original retirado do livro:
+Começamos reescrevendo o programa Python da subseção anterior. O código abaixo mostra uma versão de uma multiplicação matriz-matriz escrita em C. Como estamos passando a dimensão da matriz como parâmetro, esta versão do DGEMM usa versões unidimensionais de matrizes e aborda a aritmética para obter melhor desempenho, em vez de usar os arrays bidimensionais mais intuitivos que vimos no Python.
 
+Trecho de código original retirado do livro:
 
 \begin{lstlisting}
     for (int i = 0; i < n; ++i)
@@ -135,20 +143,6 @@ Trecho de codigo original retirado do livro:
             C[i + j * n] = cij;
         }
 \end{lstlisting}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/times_gcc.png}
-    \caption{Times GCC Flags}
-    \label{fig:times-gcc-flagsl}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/speedups_gcc.png}
-    \caption{Speedups GCC Flags}
-    \label{fig:speedups-gcc-flags}
-\end{figure}
 
 \begin{table}[h]
     \centering
@@ -165,11 +159,36 @@ Trecho de codigo original retirado do livro:
     \caption{gcc flags}
 \end{table}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/times_gcc.png}
+    \caption{Times GCC Flags}
+    \label{fig:times-gcc-flagsl}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/speedups_gcc.png}
+    \caption{Speedups GCC Flags}
+    \label{fig:speedups-gcc-flags}
+\end{figure}
+
 É evidente que usar uma linguagem compilada como C e aproveitar a localidade espacial (dado que C armazena matrizes contíguas na memória) pode melhorar significativamente o desempenho da multiplicação de matrizes. Além disso, o uso de sinalizadores de otimização gcc apropriados aumenta ainda mais a velocidade de execução, com o sinalizador O3 demonstrando o melhor desempenho entre os sinalizadores testados.
+
+\newpage
+\newpage
 
 \subsection{Subword Parallelism and Matrix Multiply}
 
-Trecho de codigo original retirado do livro:
+Para demonstrar o impacto no desempenho do paralelismo de subpalavras, executaremos novamente o código usando AVX. Embora os criadores de compiladores possam eventualmente produzir código de alta qualidade rotineiramente que usa as instruções AVX do x86, por enquanto iremos "trapacear" usando intrínsecos C que mais ou menos dizem ao compilador exatamente como produzir um bom código. 
+
+A declaração na linha 7 da Figura 3.19 usa o tipo de dados m256d, que informa o compilador a variável conterá quatro valores de ponto flutuante de precisão dupla (4 x 64 bits = 512 bits).
+
+O intrínseco mm256loadpd(), também na linha 7, usa instruções AVX para carregar quatro números de ponto flutuante de precisão dupla em paralelo (pd) da matriz C para c0. O cálculo do endereço C+i+j*n representa o elemento C[i+j*n]. Simetricamente, a etapa final na linha 13 usa o mm256storepd() intrínseco para armazenar oito números de ponto flutuante de precisão dupla de c0 na matriz C. À medida que passamos por oito elementos a cada iteração, o loop for externo na linha 4 incrementa i em 8 em vez de 1 como na linha 3 da Figura 2.43 do Capítulo 2.
+
+Dentro dos loops, na linha 10 primeiro carregamos quatro elementos de A novamente usando mm256loadpd(). Para multiplicar esses elementos por um elemento de B, primeiro usamos o intrínseco mm256broadcastsd(), que faz quatro cópias idênticas do número escalar de dupla precisão - neste caso, um elemento de B - em um dos registradores ZMM. Em seguida, usamos mm256fmaddpd na linha 11 para multiplicar os quatro resultados de precisão dupla em paralelo e, em seguida, adicionar os quatro produtos às quatro somas em c0.
+
+Trecho de código original retirado do livro:
 
 \begin{lstlisting}
     for (int i = 0; i < n; i += 4)
@@ -194,22 +213,6 @@ Trecho de codigo original retirado do livro:
         }
 \end{lstlisting}
 
-A diferença entre o código original e o melhorado está no uso da função intrínseca mm256broadcastsd, que transmite o valor escalar B[k + j * n] para todos os elementos do registro AVX de 256 bits. Essa otimização reduz a necessidade de carregar o valor escalar várias vezes da memória durante o loop, melhorando o desempenho geral.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/times_avx.png}
-    \caption{Times AVX Instructions}
-    \label{fig:times-avx}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/speedups_avx.png}
-    \caption{Speedups AVX Instructions}
-    \label{fig:speedups-avx}
-\end{figure}
-
 \begin{table}[h]
     \centering
     \label{tab:avx}
@@ -222,11 +225,30 @@ A diferença entre o código original e o melhorado está no uso da função int
     \caption{AVX}
 \end{table}
 
-demonstram a utilização do paralelismo de subpalavras usando instruções AVX (Advanced Vector Extensions) para multiplicação de matrizes. AVX é uma extensão de conjunto de instruções que permite o processamento de vários elementos de dados em paralelo, proporcionando melhorias significativas de desempenho para determinados cálculos.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/times_avx.png}
+    \caption{Times AVX Instructions}
+    \label{fig:times-avx}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/speedups_avx.png}
+    \caption{Speedups AVX Instructions}
+    \label{fig:speedups-avx}
+\end{figure}
+
+A versão AVX2 é 7.0 vezes mais rápida, o que é muito próximo do fator de aumento de 8,0 que você pode esperar ao executar oito vezes mais operações por vez usando o paralelismo de subpalavras.
+
+\newpage
+\newpage
 
 \subsection{Instruction-Level Parallelism and Matrix Multiply}
 
-Trecho de codigo original retirado do livro:
+Nesta seção, discutiremos o código apresentado, que explora o paralelismo de nível de instrução (Instruction-Level Parallelism - ILP). Podemos ver o impacto do paralelismo em nível de instrução ao desenrolar o loop de modo que o processador de execução fora de ordem e com vários problemas tenha mais instruções para trabalhar. Como o exemplo de desenrolamento no código abaixo, vamos desenrolar o loop quatro vezes. Em vez de desenrolar manualmente o loop em C fazendo quatro cópias de cada um dos intrínsecos na , podemos contar com o compilador gcc para fazer o desenrolar na otimização -O3. (Usamos a constante UNROLL no código C para controlar a quantidade de desenrolamento caso desejemos tentar outros valores.) Cercamos cada intrínseco com um loop for simples com quatro iterações (linhas 9, 15 e 19) e substituímos o escalar C0 por um array de quatro elementos c[] (linhas 8, 10, 16 e 20).
+
+Trecho de código original retirado do livro:
 
 \begin{lstlisting}
     for (int i = 0; i < n; i += UNROLL * 4)
@@ -248,20 +270,6 @@ Trecho de codigo original retirado do livro:
         }
 \end{lstlisting}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/times_unroll.png}
-    \caption{Times UNROLL}
-    \label{fig:times-unroll}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/speedups_unroll.png}
-    \caption{Speedups UNROLL}
-    \label{fig:speedups-unroll}
-\end{figure}
-
 \begin{table}[h]
     \centering
     \label{tab:unroll}
@@ -277,9 +285,30 @@ Trecho de codigo original retirado do livro:
     \caption{UNROLL}
 \end{table}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/times_unroll.png}
+    \caption{Times UNROLL}
+    \label{fig:times-unroll}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/speedups_unroll.png}
+    \caption{Speedups UNROLL}
+    \label{fig:speedups-unroll}
+\end{figure}
+
+As otimizações para paralelismo de subpalavra e paralelismo em nível de instrução resultam em um aumento geral de velocidade de 2.35 em relação ao DGEMM anterior. Comparado com a versão do Python é 325 vezes mais rápido.
+
+\newpage
+\newpage
+
 \subsection{Cache Blocking and Matrix Multiply}
 
-Trecho de codigo original retirado do livro:
+O blocking de cache é uma técnica usada para melhorar o desempenho dos algoritmos array-like, aproveitando a hierarquia de memória. O objetivo é dividir a matriz de multiplicação em blocos menores que caibam no cache, reduzindo cache miss e melhorando a localidade dos dados. O código abaixo a versão blocking. O benefício do bloqueio aumenta com o tamanho da matriz. Como o número de operações de ponto flutuante por elemento de matriz é o mesmo independente do tamanho da matriz, podemos medir o desempenho de maneira justa pelo número de operações de ponto flutuante computadas por segundo. A Figura 5.49 compara o desempenho em GFLOPS/seg da versão C original com
+
+Trecho de código original retirado do livro:
 
 \begin{lstlisting}
     void do_block(int n, int si, int sj, int sk, double *A, 
@@ -301,20 +330,6 @@ Trecho de codigo original retirado do livro:
                 do_block(n, si, sj, sk, A, B, C);
 \end{lstlisting}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/times_blocking.png}
-    \caption{Times Blocking}
-    \label{fig:times-blocking}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/speedups_blocking.png}
-    \caption{Speedups Blocking}
-    \label{fig:speedups-blocking}
-\end{figure}
-
 \begin{table}[h]
     \centering
     \label{tab:blocking}
@@ -332,9 +347,30 @@ Trecho de codigo original retirado do livro:
     \caption{Blocking}
 \end{table}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/times_blocking.png}
+    \caption{Times Blocking}
+    \label{fig:times-blocking}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/speedups_blocking.png}
+    \caption{Speedups Blocking}
+    \label{fig:speedups-blocking}
+\end{figure}
+
+Otimizações para paralelismo de subpalavra, paralelismo em nível de instrução e caches. O caching melhora o desempenho sobre o código anterior por fatores 56 para a maior matriz. A menor matriz cabe no cache L1, então o cache quase não faz diferença.
+
+\newpage
+\newpage
+
 \subsection{Multiple Processors and Matrix Multiply}
 
-Trecho de codigo original retirado do livro:
+Esta seção é a final. Cada Core Ryzen 5 3400G tem quatro núcleos e oito threads. O código abaixo mostra a versão OpenMP do DGEMM que utiliza esses núcleos. Observe que a linha 27 é a única linha adicionada para fazer esse código rodar em vários processadores: um pragma OpenMP que informa ao compilador para usar vários threads no loop mais externo. Ele diz ao computador para espalhar o trabalho do loop mais externo por todos os threads. A Figura traça um gráfico clássico de aceleração de multiprocessador, mostrando a melhoria de desempenho em relação a um único thread à medida que o número de threads aumenta. Este gráfico facilita a visualização dos desafios de strong scaling versus weak scaling. Quando tudo cabe no cache de dados de primeiro nível, como é o caso de matrizes 64 × 64, adicionar threads na verdade prejudica o desempenho. A versão de 48 threads do DGEMM é quase metade da velocidade da versão de thread único neste caso. Em contraste, as duas maiores matrizes obtêm uma aceleração de 8 e, portanto, as clássicas duas linhas “para cima e para a direita”.Na versão Python, a aceleração é de quase 5.000 para uma versão C do DGEMM otimizada para paralelismo de nível de dados, hierarquia de memória e paralelismo de nível de thread.
+
+Trecho de código original retirado do livro:
 
 \begin{lstlisting}
     void do_block(int n, int si, int sj, int sk,
@@ -369,20 +405,6 @@ Trecho de codigo original retirado do livro:
                     do_block(n, si, sj, sk, A, B, C);
 \end{lstlisting}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/times_threads.png}
-    \caption{Times Threads}
-    \label{fig:times-threads}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/speedups_threads.png}
-    \caption{Speedups Threads}
-    \label{fig:speedups-threads}
-\end{figure}
-
 \begin{table}[h]
     \centering
     \label{tab:threads}
@@ -396,23 +418,26 @@ Trecho de codigo original retirado do livro:
     \caption{Threads}
 \end{table}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/times_threads.png}
+    \caption{Times Threads}
+    \label{fig:times-threads}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/speedups_threads.png}
+    \caption{Speedups Threads}
+    \label{fig:speedups-threads}
+\end{figure}
+
 A utilização de múltiplos processadores (ou threads) para realizar a multiplicação de matrizes em paralelo, usando a biblioteca OpenMP, demonstra um grande aumento no desempenho em relação à execução sequencial. O uso de 8 threads alcançou uma velocidade quase 6.5 vezes maior em comparação com o desempenho sequencial.
 
+\newpage
+\newpage
+
 \section{Resultados}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/all_times_sizes.png}
-    \caption{Comparação Final Tempos}
-    \label{fig:times-finall}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.75]{figures/all_speedups_sizes.png}
-    \caption{Comparação Final Speedups}
-    \label{fig:speedups-final}
-\end{figure}
 
 \begin{table}[h]
     \centering
@@ -428,6 +453,23 @@ A utilização de múltiplos processadores (ou threads) para realizar a multipli
     \end{tabular}
     \caption{Comparação Final}
 \end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/all_times_sizes.png}
+    \caption{Comparação Final Tempos}
+    \label{fig:times-finall}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.6]{figures/all_speedups_sizes.png}
+    \caption{Comparação Final Speedups}
+    \label{fig:speedups-final}
+\end{figure}
+
+\newpage
+\newpage
 
 \section{Referências}
 
@@ -445,7 +487,5 @@ A utilização de múltiplos processadores (ou threads) para realizar a multipli
 \item Documentação GCC retirado de \url{https://gcc.gnu.org/onlinedocs/gcc}
 
 \end{enumerate}
-
-\bibliography{sbc-template}
 
 \end{document}

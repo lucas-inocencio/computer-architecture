@@ -7,7 +7,7 @@ ENTITY LookAhead4Bit IS
     PORT(
         a, b, p, g : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         cin : IN STD_LOGIC;
-        s : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        s : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
 END LookAhead4Bit;
 

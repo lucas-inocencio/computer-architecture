@@ -14,5 +14,5 @@ ARCHITECTURE behavior OF carry_generator IS
 
 BEGIN
     c <= g1 OR (p1 AND cin);
-    cout <= g2 OR (p2 AND c) OR (p1 AND g2 AND cin);
+    cout <= g2 OR (p2 AND g1) OR (p1 AND g2 AND cin);
 END behavior;

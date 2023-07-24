@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="3.8.0" version="1.0">
+  This file is intended to be loaded by Logisim-evolution v3.8.0(https://github.com/logisim-evolution/).
+
+  <lib desc="#Wiring" name="0">
+    <tool name="Pin">
+      <a name="appearance" val="classic"/>
+    </tool>
+  </lib>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#TTL" name="6"/>
+  <lib desc="#TCL" name="7"/>
+  <lib desc="#Base" name="8"/>
+  <lib desc="#BFH-Praktika" name="9"/>
+  <lib desc="#Input/Output-Extra" name="10"/>
+  <lib desc="#Soc" name="11"/>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <mappings>
+    <tool lib="8" map="Button2" name="Poke Tool"/>
+    <tool lib="8" map="Button3" name="Menu Tool"/>
+    <tool lib="8" map="Ctrl Button1" name="Menu Tool"/>
+  </mappings>
+  <toolbar>
+    <tool lib="8" name="Poke Tool"/>
+    <tool lib="8" name="Edit Tool"/>
+    <tool lib="8" name="Wiring Tool"/>
+    <tool lib="8" name="Text Tool"/>
+    <sep/>
+    <tool lib="0" name="Pin"/>
+    <tool lib="0" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+    </tool>
+    <sep/>
+    <tool lib="1" name="NOT Gate"/>
+    <tool lib="1" name="AND Gate"/>
+    <tool lib="1" name="OR Gate"/>
+    <tool lib="1" name="XOR Gate"/>
+    <tool lib="1" name="NAND Gate"/>
+    <tool lib="1" name="NOR Gate"/>
+    <sep/>
+    <tool lib="4" name="D Flip-Flop"/>
+    <tool lib="4" name="Register"/>
+  </toolbar>
+  <circuit name="main">
+    <a name="appearance" val="logisim_evolution"/>
+    <a name="circuit" val="main"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <comp lib="0" loc="(1040,100)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+    </comp>
+    <comp lib="0" loc="(120,610)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="radix" val="16"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="0" loc="(130,740)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+    </comp>
+    <comp lib="0" loc="(1620,1550)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(2260,830)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="width" val="2"/>
+    </comp>
+    <comp lib="0" loc="(230,540)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="radix" val="16"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="0" loc="(2480,670)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="radix" val="16"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp loc="(1270,1030)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1270,1290)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1270,1460)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1270,1720)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1280,160)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1280,420)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1280,590)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1280,850)" name="propagation_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1620,1120)" name="carry_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1620,1250)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1620,1420)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1620,1550)" name="carry_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1620,1680)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1620,990)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1630,120)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1630,250)" name="carry_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1630,380)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1630,550)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1630,680)" name="carry_generator">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(1630,810)" name="LookAhead4Bit">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(2480,670)" name="output_size">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(350,720)" name="inverter">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp loc="(600,530)" name="signal_decoder">
+      <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <wire from="(1000,590)" to="(1000,810)"/>
+    <wire from="(1000,810)" to="(1040,810)"/>
+    <wire from="(1020,550)" to="(1020,570)"/>
+    <wire from="(1020,550)" to="(1060,550)"/>
+    <wire from="(1020,610)" to="(1020,730)"/>
+    <wire from="(1020,610)" to="(1050,610)"/>
+    <wire from="(1030,1250)" to="(1030,1290)"/>
+    <wire from="(1030,1250)" to="(1400,1250)"/>
+    <wire from="(1030,1290)" to="(1050,1290)"/>
+    <wire from="(1030,1680)" to="(1030,1720)"/>
+    <wire from="(1030,1680)" to="(1400,1680)"/>
+    <wire from="(1030,1720)" to="(1050,1720)"/>
+    <wire from="(1040,100)" to="(1360,100)"/>
+    <wire from="(1040,1010)" to="(1040,1050)"/>
+    <wire from="(1040,1010)" to="(1400,1010)"/>
+    <wire from="(1040,1050)" to="(1050,1050)"/>
+    <wire from="(1040,1270)" to="(1040,1310)"/>
+    <wire from="(1040,1270)" to="(1400,1270)"/>
+    <wire from="(1040,1310)" to="(1050,1310)"/>
+    <wire from="(1040,1440)" to="(1040,1480)"/>
+    <wire from="(1040,1440)" to="(1400,1440)"/>
+    <wire from="(1040,1480)" to="(1050,1480)"/>
+    <wire from="(1040,1700)" to="(1040,1740)"/>
+    <wire from="(1040,1700)" to="(1400,1700)"/>
+    <wire from="(1040,1740)" to="(1050,1740)"/>
+    <wire from="(1040,380)" to="(1040,420)"/>
+    <wire from="(1040,380)" to="(1410,380)"/>
+    <wire from="(1040,420)" to="(1060,420)"/>
+    <wire from="(1040,810)" to="(1040,850)"/>
+    <wire from="(1040,810)" to="(1410,810)"/>
+    <wire from="(1040,850)" to="(1060,850)"/>
+    <wire from="(1050,140)" to="(1050,180)"/>
+    <wire from="(1050,140)" to="(1410,140)"/>
+    <wire from="(1050,1420)" to="(1050,1460)"/>
+    <wire from="(1050,1420)" to="(1400,1420)"/>
+    <wire from="(1050,180)" to="(1060,180)"/>
+    <wire from="(1050,400)" to="(1050,440)"/>
+    <wire from="(1050,400)" to="(1410,400)"/>
+    <wire from="(1050,440)" to="(1060,440)"/>
+    <wire from="(1050,570)" to="(1050,610)"/>
+    <wire from="(1050,570)" to="(1410,570)"/>
+    <wire from="(1050,610)" to="(1060,610)"/>
+    <wire from="(1050,830)" to="(1050,870)"/>
+    <wire from="(1050,830)" to="(1410,830)"/>
+    <wire from="(1050,870)" to="(1060,870)"/>
+    <wire from="(1050,990)" to="(1050,1030)"/>
+    <wire from="(1050,990)" to="(1400,990)"/>
+    <wire from="(1060,120)" to="(1060,160)"/>
+    <wire from="(1060,120)" to="(1410,120)"/>
+    <wire from="(1060,550)" to="(1060,590)"/>
+    <wire from="(1060,550)" to="(1410,550)"/>
+    <wire from="(110,640)" to="(110,720)"/>
+    <wire from="(110,640)" to="(240,640)"/>
+    <wire from="(110,720)" to="(130,720)"/>
+    <wire from="(120,610)" to="(240,610)"/>
+    <wire from="(1270,1030)" to="(1400,1030)"/>
+    <wire from="(1270,1050)" to="(1400,1050)"/>
+    <wire from="(1270,1070)" to="(1330,1070)"/>
+    <wire from="(1270,1090)" to="(1270,1140)"/>
+    <wire from="(1270,1140)" to="(1400,1140)"/>
+    <wire from="(1270,1290)" to="(1400,1290)"/>
+    <wire from="(1270,1310)" to="(1400,1310)"/>
+    <wire from="(1270,1330)" to="(1330,1330)"/>
+    <wire from="(1270,1350)" to="(1360,1350)"/>
+    <wire from="(1270,1460)" to="(1400,1460)"/>
+    <wire from="(1270,1480)" to="(1400,1480)"/>
+    <wire from="(1270,1500)" to="(1330,1500)"/>
+    <wire from="(1270,1520)" to="(1270,1570)"/>
+    <wire from="(1270,1570)" to="(1400,1570)"/>
+    <wire from="(1270,1720)" to="(1400,1720)"/>
+    <wire from="(1270,1740)" to="(1400,1740)"/>
+    <wire from="(1270,1760)" to="(1330,1760)"/>
+    <wire from="(1270,1780)" to="(1360,1780)"/>
+    <wire from="(1280,160)" to="(1410,160)"/>
+    <wire from="(1280,180)" to="(1410,180)"/>
+    <wire from="(1280,200)" to="(1340,200)"/>
+    <wire from="(1280,220)" to="(1280,270)"/>
+    <wire from="(1280,270)" to="(1410,270)"/>
+    <wire from="(1280,420)" to="(1410,420)"/>
+    <wire from="(1280,440)" to="(1410,440)"/>
+    <wire from="(1280,460)" to="(1340,460)"/>
+    <wire from="(1280,480)" to="(1370,480)"/>
+    <wire from="(1280,590)" to="(1410,590)"/>
+    <wire from="(1280,610)" to="(1410,610)"/>
+    <wire from="(1280,630)" to="(1340,630)"/>
+    <wire from="(1280,650)" to="(1280,700)"/>
+    <wire from="(1280,700)" to="(1410,700)"/>
+    <wire from="(1280,850)" to="(1410,850)"/>
+    <wire from="(1280,870)" to="(1410,870)"/>
+    <wire from="(1280,890)" to="(1340,890)"/>
+    <wire from="(1280,910)" to="(1370,910)"/>
+    <wire from="(1330,1070)" to="(1330,1120)"/>
+    <wire from="(1330,1120)" to="(1400,1120)"/>
+    <wire from="(1330,1160)" to="(1330,1330)"/>
+    <wire from="(1330,1160)" to="(1400,1160)"/>
+    <wire from="(1330,1500)" to="(1330,1550)"/>
+    <wire from="(1330,1550)" to="(1400,1550)"/>
+    <wire from="(1330,1590)" to="(1330,1760)"/>
+    <wire from="(1330,1590)" to="(1400,1590)"/>
+    <wire from="(1340,200)" to="(1340,250)"/>
+    <wire from="(1340,250)" to="(1410,250)"/>
+    <wire from="(1340,290)" to="(1340,460)"/>
+    <wire from="(1340,290)" to="(1410,290)"/>
+    <wire from="(1340,630)" to="(1340,680)"/>
+    <wire from="(1340,680)" to="(1410,680)"/>
+    <wire from="(1340,720)" to="(1340,890)"/>
+    <wire from="(1340,720)" to="(1410,720)"/>
+    <wire from="(1350,1070)" to="(1350,1200)"/>
+    <wire from="(1350,1070)" to="(1400,1070)"/>
+    <wire from="(1350,1200)" to="(1400,1200)"/>
+    <wire from="(1350,940)" to="(1350,1070)"/>
+    <wire from="(1350,940)" to="(1720,940)"/>
+    <wire from="(1360,100)" to="(1360,200)"/>
+    <wire from="(1360,1180)" to="(1360,1350)"/>
+    <wire from="(1360,1180)" to="(1400,1180)"/>
+    <wire from="(1360,1610)" to="(1360,1780)"/>
+    <wire from="(1360,1610)" to="(1400,1610)"/>
+    <wire from="(1360,200)" to="(1360,330)"/>
+    <wire from="(1360,200)" to="(1410,200)"/>
+    <wire from="(1360,330)" to="(1410,330)"/>
+    <wire from="(1370,310)" to="(1370,480)"/>
+    <wire from="(1370,310)" to="(1410,310)"/>
+    <wire from="(1370,740)" to="(1370,910)"/>
+    <wire from="(1370,740)" to="(1410,740)"/>
+    <wire from="(1380,1330)" to="(1380,1390)"/>
+    <wire from="(1380,1330)" to="(1400,1330)"/>
+    <wire from="(1380,1390)" to="(1740,1390)"/>
+    <wire from="(1380,1500)" to="(1380,1630)"/>
+    <wire from="(1380,1500)" to="(1390,1500)"/>
+    <wire from="(1380,1630)" to="(1400,1630)"/>
+    <wire from="(1380,1760)" to="(1380,1820)"/>
+    <wire from="(1380,1760)" to="(1400,1760)"/>
+    <wire from="(1380,1820)" to="(1740,1820)"/>
+    <wire from="(1390,1380)" to="(1390,1500)"/>
+    <wire from="(1390,1380)" to="(1810,1380)"/>
+    <wire from="(1390,1500)" to="(1400,1500)"/>
+    <wire from="(1390,460)" to="(1390,520)"/>
+    <wire from="(1390,460)" to="(1410,460)"/>
+    <wire from="(1390,520)" to="(1750,520)"/>
+    <wire from="(1390,630)" to="(1390,760)"/>
+    <wire from="(1390,630)" to="(1400,630)"/>
+    <wire from="(1390,760)" to="(1410,760)"/>
+    <wire from="(1390,890)" to="(1390,950)"/>
+    <wire from="(1390,890)" to="(1410,890)"/>
+    <wire from="(1390,950)" to="(1750,950)"/>
+    <wire from="(1400,510)" to="(1400,630)"/>
+    <wire from="(1400,510)" to="(1820,510)"/>
+    <wire from="(1400,630)" to="(1410,630)"/>
+    <wire from="(1620,1120)" to="(1810,1120)"/>
+    <wire from="(1620,1140)" to="(1740,1140)"/>
+    <wire from="(1620,1250)" to="(1890,1250)"/>
+    <wire from="(1620,1420)" to="(1920,1420)"/>
+    <wire from="(1620,1570)" to="(1740,1570)"/>
+    <wire from="(1620,1680)" to="(2000,1680)"/>
+    <wire from="(1620,990)" to="(1860,990)"/>
+    <wire from="(1630,120)" to="(1890,120)"/>
+    <wire from="(1630,250)" to="(1820,250)"/>
+    <wire from="(1630,270)" to="(1750,270)"/>
+    <wire from="(1630,380)" to="(1850,380)"/>
+    <wire from="(1630,550)" to="(1810,550)"/>
+    <wire from="(1630,680)" to="(1720,680)"/>
+    <wire from="(1630,700)" to="(1750,700)"/>
+    <wire from="(1630,810)" to="(1640,810)"/>
+    <wire from="(1640,730)" to="(1640,810)"/>
+    <wire from="(1640,730)" to="(2260,730)"/>
+    <wire from="(1720,680)" to="(1720,940)"/>
+    <wire from="(1740,1140)" to="(1740,1390)"/>
+    <wire from="(1740,1570)" to="(1740,1820)"/>
+    <wire from="(1750,270)" to="(1750,520)"/>
+    <wire from="(1750,700)" to="(1750,950)"/>
+    <wire from="(1810,1120)" to="(1810,1380)"/>
+    <wire from="(1810,550)" to="(1810,710)"/>
+    <wire from="(1810,710)" to="(2260,710)"/>
+    <wire from="(1820,250)" to="(1820,510)"/>
+    <wire from="(1850,380)" to="(1850,690)"/>
+    <wire from="(1850,690)" to="(2260,690)"/>
+    <wire from="(1860,750)" to="(1860,990)"/>
+    <wire from="(1860,750)" to="(2260,750)"/>
+    <wire from="(1890,110)" to="(1890,120)"/>
+    <wire from="(1890,120)" to="(1890,670)"/>
+    <wire from="(1890,670)" to="(2260,670)"/>
+    <wire from="(1890,770)" to="(1890,1250)"/>
+    <wire from="(1890,770)" to="(2260,770)"/>
+    <wire from="(1920,790)" to="(1920,1420)"/>
+    <wire from="(1920,790)" to="(2260,790)"/>
+    <wire from="(2000,810)" to="(2000,1680)"/>
+    <wire from="(2000,810)" to="(2260,810)"/>
+    <wire from="(230,540)" to="(240,540)"/>
+    <wire from="(240,530)" to="(240,540)"/>
+    <wire from="(240,530)" to="(380,530)"/>
+    <wire from="(240,610)" to="(240,640)"/>
+    <wire from="(350,720)" to="(360,720)"/>
+    <wire from="(360,680)" to="(360,720)"/>
+    <wire from="(360,680)" to="(380,680)"/>
+    <wire from="(380,550)" to="(380,680)"/>
+    <wire from="(600,530)" to="(820,530)"/>
+    <wire from="(600,550)" to="(900,550)"/>
+    <wire from="(600,570)" to="(1020,570)"/>
+    <wire from="(600,590)" to="(1000,590)"/>
+    <wire from="(600,610)" to="(960,610)"/>
+    <wire from="(600,630)" to="(950,630)"/>
+    <wire from="(600,650)" to="(780,650)"/>
+    <wire from="(600,670)" to="(730,670)"/>
+    <wire from="(600,690)" to="(870,690)"/>
+    <wire from="(600,710)" to="(930,710)"/>
+    <wire from="(600,730)" to="(1020,730)"/>
+    <wire from="(600,750)" to="(980,750)"/>
+    <wire from="(600,770)" to="(970,770)"/>
+    <wire from="(600,790)" to="(830,790)"/>
+    <wire from="(600,810)" to="(760,810)"/>
+    <wire from="(600,830)" to="(690,830)"/>
+    <wire from="(690,1740)" to="(1040,1740)"/>
+    <wire from="(690,830)" to="(690,1740)"/>
+    <wire from="(730,1680)" to="(1030,1680)"/>
+    <wire from="(730,670)" to="(730,1680)"/>
+    <wire from="(760,1480)" to="(1040,1480)"/>
+    <wire from="(760,810)" to="(760,1480)"/>
+    <wire from="(780,1420)" to="(1050,1420)"/>
+    <wire from="(780,650)" to="(780,1420)"/>
+    <wire from="(820,120)" to="(1060,120)"/>
+    <wire from="(820,120)" to="(820,530)"/>
+    <wire from="(830,1310)" to="(1040,1310)"/>
+    <wire from="(830,790)" to="(830,1310)"/>
+    <wire from="(870,180)" to="(1050,180)"/>
+    <wire from="(870,180)" to="(870,690)"/>
+    <wire from="(900,380)" to="(1040,380)"/>
+    <wire from="(900,380)" to="(900,550)"/>
+    <wire from="(930,440)" to="(1050,440)"/>
+    <wire from="(930,440)" to="(930,710)"/>
+    <wire from="(950,1250)" to="(1030,1250)"/>
+    <wire from="(950,630)" to="(950,1250)"/>
+    <wire from="(960,610)" to="(960,990)"/>
+    <wire from="(960,990)" to="(1050,990)"/>
+    <wire from="(970,1050)" to="(1040,1050)"/>
+    <wire from="(970,770)" to="(970,1050)"/>
+    <wire from="(980,750)" to="(980,870)"/>
+    <wire from="(980,870)" to="(1050,870)"/>
+  </circuit>
+  <vhdl name="inverter">LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+
+ENTITY inverter IS
+    PORT (
+        a : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        sel : IN STD_LOGIC;
+        s : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    );
+END inverter;
+
+ARCHITECTURE behavior OF inverter IS
+BEGIN
+    PROCESS (a, sel)
+    BEGIN
+        IF (sel = '1') THEN
+            s &lt;= NOT a;
+        ELSE
+            s &lt;= a;
+        END IF;
+    END PROCESS;
+END behavior;</vhdl>
+  <vhdl name="carry_generator">-- CLA generator 4-bit
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+ENTITY carry_generator IS
+    PORT (
+        p1, g1, p2, g2, cin : IN STD_LOGIC;
+        cout, c : OUT STD_LOGIC
+    );
+END carry_generator;
+
+ARCHITECTURE behavior OF carry_generator IS
+
+BEGIN
+    c &lt;= g1 OR (p1 AND cin);
+    cout &lt;= g2 OR (p2 AND g1) OR (p1 AND g2 AND cin);
+END behavior;</vhdl>
+  <vhdl name="LookAhead4Bit">-- LookAhead 4-Bit
+
+LIBRARY ieee;
+use ieee.std_logic_1164.all;
+
+ENTITY LookAhead4Bit IS
+    PORT(
+        a, b, p, g : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        cin : IN STD_LOGIC;
+        s : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+    );
+END LookAhead4Bit;
+
+ARCHITECTURE LookAhead4Bit OF LookAhead4Bit IS
+BEGIN
+    s(0) &lt;= p(0) XOR cin;
+    s(1) &lt;= p(1) XOR (g(0) OR (p(0) AND cin));
+    s(2) &lt;= p(2) XOR (g(1) OR (p(1) AND g(0)) OR (p(1) AND p(0) AND cin));
+    s(3) &lt;= p(3) XOR ((p(2) AND g(1)) OR (p(2) AND p(1) AND g(0)) OR (p(2) AND p(1) AND p(0) AND cin));
+END LookAhead4Bit;</vhdl>
+  <vhdl name="output_size">-- moduling different sizes of adders
+
+LIBRARY ieee;
+use ieee.std_logic_1164.ALL;
+
+ENTITY output_size IS
+    PORT (
+        s0, s1, s2, s3, s4, s5, s6, s7 : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        sel : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+        s : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    );
+END output_size;
+
+ARCHITECTURE behavior OF output_size IS
+    SIGNAL s_int : STD_LOGIC_VECTOR(31 DOWNTO 0);
+
+BEGIN
+    s_int(3 DOWNTO 0) &lt;= s0;
+    s_int(7 DOWNTO 4) &lt;= s1;
+    s_int(11 DOWNTO 8) &lt;= s2;
+    s_int(15 DOWNTO 12) &lt;= s3;
+    s_int(19 DOWNTO 16) &lt;= s4;
+    s_int(23 DOWNTO 20) &lt;= s5;
+    s_int(27 DOWNTO 24) &lt;= s6;
+    s_int(31 DOWNTO 28) &lt;= s7;
+
+    PROCESS (sel)
+    BEGIN
+        CASE sel IS
+            WHEN "00" =&gt;
+                s(3 DOWNTO 0) &lt;= s_int(3 DOWNTO 0);
+            WHEN "01" =&gt;
+                s(7 DOWNTO 0) &lt;= s_int(7 DOWNTO 0);
+            WHEN "10" =&gt;
+                s(15 DOWNTO 0) &lt;= s_int(15 DOWNTO 0);
+            WHEN "11" =&gt;
+                s &lt;= s_int;
+            WHEN others =&gt;
+            	s &lt;= "00000000000000000000000000000000";
+        END CASE;
+    END PROCESS;
+END behavior;</vhdl>
+  <vhdl name="propagation_generator">-- propagation generator for CLA 4-Bit Adder
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+
+ENTITY propagation_generator IS
+    PORT (
+        a, b : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        vec_p, vec_g : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        p, g : OUT STD_LOGIC
+    );
+END propagation_generator;
+
+ARCHITECTURE behavior OF propagation_generator IS
+    SIGNAL p_vec, g_vec : STD_LOGIC_VECTOR(3 DOWNTO 0);
+BEGIN
+    PROCESS (a, b)
+    BEGIN
+        p_vec &lt;= a XOR b;
+        g_vec &lt;= a AND b;
+    END PROCESS;
+
+    vec_p &lt;= p_vec;
+    vec_g &lt;= g_vec;
+    p &lt;= p_vec(3) AND p_vec(2) AND p_vec(1) AND p_vec(0);
+    g &lt;= g_vec(3) OR (g_vec(2) AND p_vec(3)) OR (p_vec(3) AND p_vec(2) AND g_vec(1)) OR (p_vec(3) AND p_vec(2) AND p_vec(1) AND g_vec(0));
+END behavior;</vhdl>
+  <vhdl name="signal_decoder">LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+
+ENTITY signal_decoder IS
+    PORT (
+        a, b : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+    );
+END signal_decoder;
+
+ARCHITECTURE Behavioral OF signal_decoder IS
+
+BEGIN
+    a0 &lt;= a(3 DOWNTO 0);
+    a1 &lt;= a(7 DOWNTO 4);
+    a2 &lt;= a(11 DOWNTO 8);
+    a3 &lt;= a(15 DOWNTO 12);
+    a4 &lt;= a(19 DOWNTO 16);
+    a5 &lt;= a(23 DOWNTO 20);
+    a6 &lt;= a(27 DOWNTO 24);
+    a7 &lt;= a(31 DOWNTO 28);
+
+    b0 &lt;= b(3 DOWNTO 0);
+    b1 &lt;= b(7 DOWNTO 4);
+    b2 &lt;= b(11 DOWNTO 8);
+    b3 &lt;= b(15 DOWNTO 12);
+    b4 &lt;= b(19 DOWNTO 16);
+    b5 &lt;= b(23 DOWNTO 20);
+    b6 &lt;= b(27 DOWNTO 24);
+    b7 &lt;= a(31 DOWNTO 28);
+END Behavioral;</vhdl>
+</project>
